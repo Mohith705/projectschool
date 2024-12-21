@@ -1,4 +1,5 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
+from src.dependencies import validate_schoolname_header
 from src.auth.routes import auth_router
 from src.admission.routes import admission_router
 from src.faculty.routes import faculty_router
@@ -31,7 +32,8 @@ app = FastAPI(
     terms_of_service="httpS://example.com/tos",
     openapi_url=f"{version_prefix}/openapi.json",
     docs_url=f"{version_prefix}/docs",
-    redoc_url=f"{version_prefix}/redoc"
+    redoc_url=f"{version_prefix}/redoc",
+    dependencies=[Depends(validate_schoolname_header)]
 )
 
 app.include_router(auth_router, prefix=f"{version_prefix}/auth", tags=["auth"])
